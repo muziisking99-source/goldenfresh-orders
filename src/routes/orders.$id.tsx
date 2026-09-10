@@ -181,18 +181,22 @@ function SalesOrderPage() {
           >
             <ArrowLeft className="h-4 w-4" /> History
           </Link>
-          <div className="flex flex-wrap gap-2">
-            <Button variant="outline" className="flex-1 sm:flex-none" asChild>
+          <div className="flex flex-wrap gap-2 md:gap-2.5">
+            <Button variant="outline" className="h-10 flex-1 sm:flex-none md:h-11 md:px-5" asChild>
               <Link to="/orders/edit/$id" params={{ id: order.id }}>
                 <Pencil className="mr-2 h-4 w-4" /> Edit
               </Link>
             </Button>
-            <Button variant="outline" className="flex-1 sm:flex-none" onClick={() => window.print()}>
+            <Button
+              variant="outline"
+              className="h-10 flex-1 sm:flex-none md:h-11 md:px-5"
+              onClick={() => window.print()}
+            >
               <Printer className="mr-2 h-4 w-4" /> Print
             </Button>
             <Button
               variant="outline"
-              className="flex-1 sm:flex-none"
+              className="h-10 flex-1 sm:flex-none md:h-11 md:px-5"
               onClick={() => void handleDownloadPdf()}
               disabled={busy !== null}
             >
@@ -200,7 +204,7 @@ function SalesOrderPage() {
               {busy === "download" ? "Preparing…" : "Download PDF"}
             </Button>
             <Button
-              className="flex-1 sm:flex-none"
+              className="h-10 flex-1 sm:flex-none md:h-11 md:px-5"
               onClick={() => void handleSharePdf()}
               disabled={busy !== null}
             >

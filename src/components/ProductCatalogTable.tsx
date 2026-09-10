@@ -44,7 +44,7 @@ export function ProductCatalogTable({
 
   return (
     <div className={cn("h-full overflow-auto overscroll-contain", className)}>
-      {/* Mobile: stacked cards so description is fully readable */}
+      {/* Phone only: stacked cards — unchanged below sm */}
       <div className="sm:hidden">
         {rows.map((row) => {
           if (row.type === "group") {
@@ -106,20 +106,20 @@ export function ProductCatalogTable({
         <div className="h-24" aria-hidden />
       </div>
 
-      {/* Desktop / tablet: table */}
+      {/* sm+: table; md/lg: roomier rows & touch targets for tablets */}
       <table className="hidden w-full table-fixed border-collapse text-sm sm:table">
         <colgroup>
-          <col className="w-[7rem]" />
+          <col className="w-[7rem] md:w-[9rem] lg:w-[10rem]" />
           <col />
-          <col className="w-[6rem]" />
-          <col className="w-[6rem]" />
+          <col className="w-[6rem] md:w-[7.5rem] lg:w-[8.5rem]" />
+          <col className="w-[6rem] md:w-[7.5rem] lg:w-[8.5rem]" />
         </colgroup>
         <thead className="sticky top-0 z-10 bg-card">
-          <tr className="border-b border-border text-left text-xs font-semibold sm:text-sm">
-            <th className="px-3 py-3 font-semibold sm:px-4">Code</th>
-            <th className="px-2 py-3 font-semibold">Description</th>
-            <th className="px-2 py-3 text-center font-semibold">Qty</th>
-            <th className="px-3 py-3 text-center font-semibold sm:px-4">Price</th>
+          <tr className="border-b border-border text-left text-xs font-semibold sm:text-sm md:text-base">
+            <th className="px-3 py-3 font-semibold sm:px-4 md:px-5 md:py-3.5">Code</th>
+            <th className="px-2 py-3 font-semibold md:px-3 md:py-3.5">Description</th>
+            <th className="px-2 py-3 text-center font-semibold md:py-3.5">Qty</th>
+            <th className="px-3 py-3 text-center font-semibold sm:px-4 md:px-5 md:py-3.5">Price</th>
           </tr>
         </thead>
         <tbody>
@@ -129,7 +129,7 @@ export function ProductCatalogTable({
                 <tr key={row.key} className="bg-muted/50">
                   <td
                     colSpan={4}
-                    className="px-3 py-1.5 text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-muted-foreground sm:px-4 sm:text-[0.7rem]"
+                    className="px-3 py-1.5 text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-muted-foreground sm:px-4 sm:text-[0.7rem] md:px-5 md:py-2 md:text-xs"
                   >
                     {row.label}
                   </td>
@@ -149,25 +149,27 @@ export function ProductCatalogTable({
                   hasQty || hasPrice ? "bg-primary/5" : "hover:bg-muted/30",
                 )}
               >
-                <td className="truncate px-3 py-2 text-xs font-medium tabular-nums sm:px-4 sm:text-sm">
+                <td className="truncate px-3 py-2 text-xs font-medium tabular-nums sm:px-4 sm:text-sm md:px-5 md:py-2.5 md:text-base">
                   {p.code}
                 </td>
-                <td className="px-2 py-2 text-xs text-foreground/90 sm:text-sm">{p.description}</td>
-                <td className="px-2 py-1.5">
+                <td className="px-2 py-2 text-xs text-foreground/90 sm:text-sm md:px-3 md:py-2.5 md:text-base md:leading-snug">
+                  {p.description}
+                </td>
+                <td className="px-2 py-1.5 md:py-2">
                   <Input
                     type="text"
                     value={quantities[p.id] ?? ""}
                     onChange={(e) => onQtyChange(p.id, e.target.value)}
-                    className="mx-auto h-8 w-full max-w-[5.5rem] px-2 text-center text-xs sm:h-9 sm:text-sm"
+                    className="mx-auto h-8 w-full max-w-[5.5rem] px-2 text-center text-xs sm:h-9 sm:text-sm md:h-11 md:max-w-[7rem] md:text-base"
                     aria-label={`Quantity for ${p.code}`}
                   />
                 </td>
-                <td className="px-3 py-1.5 sm:px-4">
+                <td className="px-3 py-1.5 sm:px-4 md:px-5 md:py-2">
                   <Input
                     type="text"
                     value={prices[p.id] ?? ""}
                     onChange={(e) => onPriceChange(p.id, e.target.value)}
-                    className="mx-auto h-8 w-full max-w-[5.5rem] px-2 text-center text-xs sm:h-9 sm:text-sm"
+                    className="mx-auto h-8 w-full max-w-[5.5rem] px-2 text-center text-xs sm:h-9 sm:text-sm md:h-11 md:max-w-[7rem] md:text-base"
                     aria-label={`Price for ${p.code}`}
                   />
                 </td>
@@ -175,7 +177,7 @@ export function ProductCatalogTable({
             );
           })}
           <tr aria-hidden>
-            <td colSpan={4} className="h-24 border-0 p-0" />
+            <td colSpan={4} className="h-24 border-0 p-0 md:h-28" />
           </tr>
         </tbody>
       </table>

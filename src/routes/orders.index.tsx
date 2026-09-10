@@ -41,7 +41,7 @@ function OrdersHistoryPage() {
 
   if (loading) {
     return (
-      <main className="mx-auto max-w-5xl px-4 py-6 md:px-6 md:py-10">
+      <main className="mx-auto max-w-5xl px-4 py-6 md:px-6 md:py-10 lg:max-w-6xl">
         <PageHeaderSkeleton />
         <Card className="mt-6">
           <CardContent className="p-0">
@@ -53,7 +53,7 @@ function OrdersHistoryPage() {
   }
 
   return (
-    <main className="mx-auto max-w-5xl px-4 py-6 md:px-6 md:py-10">
+    <main className="mx-auto max-w-5xl px-4 py-6 md:px-6 md:py-10 lg:max-w-6xl">
       <div className="mb-6 md:mb-8">
         <div className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
           Your documents
@@ -61,7 +61,7 @@ function OrdersHistoryPage() {
         <h1 className="mt-2 font-display text-3xl leading-none text-foreground md:text-5xl">
           History
         </h1>
-        <p className="mt-3 max-w-xl text-sm text-muted-foreground">
+        <p className="mt-3 max-w-xl text-sm text-muted-foreground md:text-base">
           Order Requisitions you have created. Open, edit, download, share, or delete.
         </p>
       </div>
@@ -161,23 +161,23 @@ function HistoryRow({ order }: { order: OrderListRow }) {
   }
 
   return (
-    <li className="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+    <li className="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6 md:py-5">
       <div className="min-w-0">
-        <div className="font-medium tabular-nums text-foreground">{order.document_number}</div>
-        <div className="mt-0.5 truncate text-sm text-foreground/90">{order.customer_name}</div>
-        <div className="mt-1 text-xs text-muted-foreground">
+        <div className="font-medium tabular-nums text-foreground md:text-lg">{order.document_number}</div>
+        <div className="mt-0.5 truncate text-sm text-foreground/90 md:text-base">{order.customer_name}</div>
+        <div className="mt-1 text-xs text-muted-foreground md:text-sm">
           {formatDisplayDate(order.order_date)}
           {order.account_code ? ` · ${order.account_code}` : ""}
         </div>
       </div>
-      <div className="flex flex-wrap gap-2">
-        <Button variant="outline" size="sm" asChild>
+      <div className="flex flex-wrap gap-2 md:gap-2.5">
+        <Button variant="outline" size="sm" className="md:h-10 md:px-4 md:text-sm" asChild>
           <Link to="/orders/$id" params={{ id: order.id }}>
             <Eye className="mr-1.5 h-4 w-4" />
             Open
           </Link>
         </Button>
-        <Button variant="outline" size="sm" asChild>
+        <Button variant="outline" size="sm" className="md:h-10 md:px-4 md:text-sm" asChild>
           <Link to="/orders/edit/$id" params={{ id: order.id }}>
             <Pencil className="mr-1.5 h-4 w-4" />
             Edit
@@ -186,20 +186,26 @@ function HistoryRow({ order }: { order: OrderListRow }) {
         <Button
           variant="outline"
           size="sm"
+          className="md:h-10 md:px-4 md:text-sm"
           disabled={busy !== null}
           onClick={() => void withPdf("download")}
         >
           <Download className="mr-1.5 h-4 w-4" />
           {busy === "download" ? "…" : "PDF"}
         </Button>
-        <Button size="sm" disabled={busy !== null} onClick={() => void withPdf("share")}>
+        <Button
+          size="sm"
+          className="md:h-10 md:px-4 md:text-sm"
+          disabled={busy !== null}
+          onClick={() => void withPdf("share")}
+        >
           <Share2 className="mr-1.5 h-4 w-4" />
           {busy === "share" ? "…" : "Share"}
         </Button>
         <Button
           variant="outline"
           size="sm"
-          className="text-destructive hover:bg-destructive/10 hover:text-destructive"
+          className="text-destructive hover:bg-destructive/10 hover:text-destructive md:h-10 md:px-4 md:text-sm"
           disabled={busy !== null}
           onClick={() => void handleDelete()}
         >

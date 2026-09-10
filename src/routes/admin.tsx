@@ -40,7 +40,7 @@ type Product = ProductRow;
 
 function AdminPage() {
   return (
-    <main className="mx-auto max-w-6xl px-4 py-8 md:px-6 md:py-12">
+    <main className="mx-auto max-w-6xl px-4 py-8 md:px-6 md:py-12 lg:max-w-7xl">
       <div className="mb-6 md:mb-8">
         <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Workspace</div>
         <h1 className="mt-2 font-display text-3xl leading-none text-foreground md:text-5xl">

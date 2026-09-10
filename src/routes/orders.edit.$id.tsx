@@ -249,7 +249,7 @@ function EditOrderPage() {
     return (
       <main className="flex h-[calc(100dvh-3.5rem)] flex-col overflow-hidden md:h-[calc(100dvh-4.25rem)]">
         <div className="shrink-0 border-b border-border/70 px-4 py-3 md:px-6">
-          <div className="mx-auto h-8 max-w-6xl animate-pulse rounded-md bg-primary/10" />
+          <div className="mx-auto h-8 max-w-6xl animate-pulse rounded-md bg-primary/10 lg:max-w-7xl" />
         </div>
         <div className="min-h-0 flex-1 p-0">
           <TableSkeleton rows={12} />
@@ -284,33 +284,33 @@ function EditOrderPage() {
 
   return (
     <main className="flex h-[calc(100dvh-3.5rem)] flex-col overflow-hidden md:h-[calc(100dvh-4.25rem)]">
-      <div className="shrink-0 border-b border-border/70 bg-background/95 px-4 py-3 md:px-6">
-        <div className="mx-auto flex max-w-6xl flex-col gap-3">
+      <div className="shrink-0 border-b border-border/70 bg-background/95 px-4 py-3 md:px-6 md:py-4">
+        <div className="mx-auto flex max-w-6xl flex-col gap-3 lg:max-w-7xl md:gap-3.5">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div>
-              <h1 className="font-display text-xl leading-none text-[var(--brand-navy)] md:text-2xl">
+              <h1 className="font-display text-xl leading-none text-[var(--brand-navy)] md:text-2xl lg:text-3xl">
                 Edit {order.document_number}
               </h1>
               <Link
                 to="/orders/$id"
                 params={{ id: order.id }}
-                className="mt-1 inline-block text-xs text-muted-foreground underline-offset-2 hover:underline"
+                className="mt-1 inline-block text-xs text-muted-foreground underline-offset-2 hover:underline md:text-sm"
               >
                 Cancel — back to document
               </Link>
             </div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-muted-foreground md:text-sm">
               Price optional — blank hides it on the document
             </p>
           </div>
 
-          <div className="grid gap-2 sm:grid-cols-[minmax(0,16rem)_minmax(0,1fr)_auto] sm:items-center">
+          <div className="grid gap-2 sm:grid-cols-[minmax(0,16rem)_minmax(0,1fr)_auto] sm:items-center md:grid-cols-[minmax(0,18rem)_minmax(0,1fr)_auto] md:gap-3">
             <Popover open={customerOpen} onOpenChange={setCustomerOpen}>
               <PopoverTrigger asChild>
                 <Button
                   variant="outline"
                   role="combobox"
-                  className="w-full justify-between font-normal"
+                  className="h-10 w-full justify-between font-normal md:h-11 md:text-base"
                 >
                   <span className="truncate">
                     {selectedCustomer
@@ -346,10 +346,10 @@ function EditOrderPage() {
                             )}
                           />
                           <div className="flex min-w-0 flex-col">
-                            <span className="font-medium">
+                            <span className="font-medium md:text-base">
                               {c.account_code || <span className="text-muted-foreground">—</span>}
                             </span>
-                            <span className="truncate text-xs text-muted-foreground">
+                            <span className="truncate text-xs text-muted-foreground md:text-sm">
                               {c.name}
                               {c.sales_code?.trim() ? ` · ${c.sales_code}` : ""}
                             </span>
@@ -363,12 +363,12 @@ function EditOrderPage() {
             </Popover>
 
             <div className="relative min-w-0">
-              <Search className="pointer-events-none absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Search className="pointer-events-none absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground md:left-3 md:h-5 md:w-5" />
               <Input
                 value={productFilter}
                 onChange={(e) => setProductFilter(e.target.value)}
                 placeholder="Filter products…"
-                className="pl-8"
+                className="h-10 pl-8 md:h-11 md:pl-10 md:text-base"
                 aria-label="Filter products"
               />
             </div>
@@ -377,7 +377,7 @@ function EditOrderPage() {
               type="button"
               variant="outline"
               size="sm"
-              className="w-full sm:w-auto"
+              className="h-10 w-full sm:w-auto md:h-11 md:px-4 md:text-sm"
               onClick={clearAllQuantities}
             >
               <Eraser className="mr-1.5 h-4 w-4" />
@@ -386,8 +386,8 @@ function EditOrderPage() {
           </div>
 
           {selectedCustomer ? (
-            <div className="min-w-0 text-xs text-muted-foreground">
-              <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <div className="min-w-0 text-xs text-muted-foreground md:text-sm">
+              <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 md:gap-x-4">
                 <span>
                   <span className="text-muted-foreground">Account </span>
                   <span className="font-medium text-foreground">
@@ -404,7 +404,7 @@ function EditOrderPage() {
                 {selectedCustomer.delivery_address ? (
                   <button
                     type="button"
-                    className="text-primary underline-offset-2 hover:underline"
+                    className="text-primary underline-offset-2 hover:underline md:py-0.5"
                     onClick={() => setAddressOpen((o) => !o)}
                   >
                     {addressOpen ? "Hide address" : "Show address"}
@@ -421,13 +421,13 @@ function EditOrderPage() {
         </div>
       </div>
 
-      <div className="mx-auto min-h-0 w-full max-w-6xl flex-1 overflow-hidden border-x border-border/40 bg-card">
+      <div className="mx-auto min-h-0 w-full max-w-6xl flex-1 overflow-hidden border-x border-border/40 bg-card lg:max-w-7xl">
         {products.length === 0 ? (
-          <div className="px-4 py-10 text-sm text-muted-foreground sm:px-6">
+          <div className="px-4 py-10 text-sm text-muted-foreground sm:px-6 md:text-base">
             No products yet. Add them in Admin.
           </div>
         ) : filteredProducts.length === 0 ? (
-          <div className="px-4 py-10 text-sm text-muted-foreground sm:px-6">
+          <div className="px-4 py-10 text-sm text-muted-foreground sm:px-6 md:text-base">
             No products match “{productFilter}”.
           </div>
         ) : (
@@ -445,8 +445,8 @@ function EditOrderPage() {
         className="fixed inset-x-0 bottom-0 z-30 border-t border-border/70 bg-background/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-md print:hidden"
         style={{ "--tw-shadow": "0 -8px 24px rgba(11,31,58,0.06)" } as CSSProperties}
       >
-        <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between md:px-6">
-          <div className="text-sm text-muted-foreground">
+        <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between md:px-6 md:py-4 lg:max-w-7xl">
+          <div className="text-sm text-muted-foreground md:text-base">
             <span className="font-semibold text-foreground">{itemCount}</span>{" "}
             {itemCount === 1 ? "item" : "items"}
           </div>
@@ -454,7 +454,7 @@ function EditOrderPage() {
             onClick={() => void handleSave()}
             disabled={submitting}
             size="lg"
-            className="w-full sm:w-auto"
+            className="h-11 w-full sm:w-auto md:h-12 md:min-w-[16rem] md:px-8 md:text-base"
           >
             {submitting ? "Saving…" : "Save changes"}
           </Button>

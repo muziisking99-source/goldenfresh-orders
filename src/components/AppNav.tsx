@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/sheet";
 
 const navLinkClass =
-  "rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring [&.active]:bg-[var(--brand-navy)] [&.active]:text-white";
+  "rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:px-5 md:py-2.5 md:text-[0.9375rem] [&.active]:bg-[var(--brand-navy)] [&.active]:text-white";
 
 const mobileLinkClass =
   "block rounded-lg px-4 py-3 text-base font-medium text-foreground transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring [&.active]:bg-[var(--brand-navy)] [&.active]:text-white";
@@ -43,7 +43,7 @@ export function AppNav() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/90 backdrop-blur-md print:hidden">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 md:px-6 md:py-4">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 md:px-6 md:py-4 lg:max-w-7xl">
         <Link to="/" className="group flex min-w-0 items-center gap-2.5">
           <img
             src="/golden-fresh-logo.png"
