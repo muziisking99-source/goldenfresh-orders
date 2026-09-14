@@ -1,7 +1,24 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type CSSProperties, type ReactNode } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { ChevronDown, ChevronRight, Pencil, Plus, Trash2 } from "lucide-react";
+import {
+  DndContext,
+  KeyboardSensor,
+  PointerSensor,
+  closestCenter,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  arrayMove,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { ChevronDown, ChevronRight, GripVertical, Pencil, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { requireAdmin } from "@/lib/auth";
@@ -29,6 +46,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { BulkImportDialog, type BulkImportConfig } from "@/components/BulkImportDialog";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/admin")({
   beforeLoad: () => requireAdmin(),
@@ -279,12 +297,23 @@ function ProductsPanel() {
   });
   const [editing, setEditing] = useState<Product | null>(null);
   const [open, setOpen] = useState(false);
+  const [ordered, setOrdered] = useState<Product[]>([]);
+  const [savingOrder, setSavingOrder] = useState(false);
+
+  useEffect(() => {
+    setOrdered(rows);
+  }, [rows]);
 
   const categoryOptions = useMemo(() => {
     const set = new Set<string>();
-    for (const p of rows) set.add(resolveProductCategory(p));
+    for (const p of ordered) set.add(resolveProductCategory(p));
     return Array.from(set).sort((a, b) => a.localeCompare(b));
-  }, [rows]);
+  }, [ordered]);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+  );
 
   async function invalidate() {
     await Promise.all([
@@ -309,10 +338,48 @@ function ProductsPanel() {
     }
   }
 
+  async function persistOrder(next: Product[]) {
+    setSavingOrder(true);
+    const updates = next.map((p, index) =>
+      supabase.from("products").update({ sort_order: index }).eq("id", p.id),
+    );
+    const results = await Promise.all(updates);
+    setSavingOrder(false);
+
+    const firstError = results.find((r) => r.error)?.error;
+    if (firstError) {
+      toast.error(firstError.message);
+      setOrdered(rows);
+      return;
+    }
+
+    await invalidate();
+    toast.success("Product order saved");
+  }
+
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+
+    const oldIndex = ordered.findIndex((p) => p.id === active.id);
+    const newIndex = ordered.findIndex((p) => p.id === over.id);
+    if (oldIndex < 0 || newIndex < 0) return;
+
+    const next = arrayMove(ordered, oldIndex, newIndex);
+    setOrdered(next);
+    void persistOrder(next);
+  }
+
   return (
     <Card>
       <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <CardTitle>Products</CardTitle>
+        <div>
+          <CardTitle>Products</CardTitle>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Drag the handle to change the order shown on the order form.
+            {savingOrder ? " Saving…" : ""}
+          </p>
+        </div>
         <div className="flex flex-wrap gap-2">
           <BulkImportDialog config={PRODUCT_IMPORT_CONFIG} onImported={() => void invalidate()} />
           <Button
@@ -329,48 +396,47 @@ function ProductsPanel() {
       <CardContent>
         {loading ? (
           <TableSkeleton rows={6} />
-        ) : rows.length === 0 ? (
+        ) : ordered.length === 0 ? (
           <div className="py-6 text-sm text-muted-foreground">No products yet.</div>
         ) : (
           <div className="overflow-x-auto text-xs sm:text-sm">
-            <table className="w-full">
-              <thead className="border-b border-border text-left text-xs uppercase text-muted-foreground">
-                <tr>
-                  <th className="py-2 pr-4">Code</th>
-                  <th className="py-2 pr-4">Description</th>
-                  <th className="hidden py-2 pr-4 sm:table-cell">Category</th>
-                  <th className="hidden py-2 pr-4 md:table-cell">Unit</th>
-                  <th className="py-2 w-24"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map((p) => (
-                  <tr key={p.id} className="border-b border-border">
-                    <td className="py-2 pr-4 font-mono text-xs">{p.code}</td>
-                    <td className="py-2 pr-4">{p.description}</td>
-                    <td className="hidden py-2 pr-4 sm:table-cell">
-                      {resolveProductCategory(p)}
-                    </td>
-                    <td className="hidden py-2 pr-4 md:table-cell">{p.unit || "—"}</td>
-                    <td className="py-2 text-right">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => {
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={handleDragEnd}
+            >
+              <table className="w-full">
+                <thead className="border-b border-border text-left text-xs uppercase text-muted-foreground">
+                  <tr>
+                    <th className="w-10 py-2 pr-2" aria-label="Reorder" />
+                    <th className="py-2 pr-4">Code</th>
+                    <th className="py-2 pr-4">Description</th>
+                    <th className="hidden py-2 pr-4 sm:table-cell">Category</th>
+                    <th className="hidden py-2 pr-4 md:table-cell">Unit</th>
+                    <th className="py-2 w-24"></th>
+                  </tr>
+                </thead>
+                <SortableContext
+                  items={ordered.map((p) => p.id)}
+                  strategy={verticalListSortingStrategy}
+                >
+                  <tbody>
+                    {ordered.map((p) => (
+                      <SortableProductRow
+                        key={p.id}
+                        product={p}
+                        disabled={savingOrder}
+                        onEdit={() => {
                           setEditing(p);
                           setOpen(true);
                         }}
-                      >
-                        <Pencil className="h-4 w-4" />
-                      </Button>
-                      <Button variant="ghost" size="icon" onClick={() => remove(p.id)}>
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                        onRemove={() => void remove(p.id)}
+                      />
+                    ))}
+                  </tbody>
+                </SortableContext>
+              </table>
+            </DndContext>
           </div>
         )}
       </CardContent>
@@ -386,6 +452,65 @@ function ProductsPanel() {
         }}
       />
     </Card>
+  );
+}
+
+function SortableProductRow({
+  product,
+  disabled,
+  onEdit,
+  onRemove,
+}: {
+  product: Product;
+  disabled?: boolean;
+  onEdit: () => void;
+  onRemove: () => void;
+}) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: product.id,
+    disabled,
+  });
+
+  const style: CSSProperties = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  return (
+    <tr
+      ref={setNodeRef}
+      style={style}
+      className={cn(
+        "border-b border-border bg-card",
+        isDragging && "relative z-10 opacity-90 shadow-md",
+        disabled && "opacity-70",
+      )}
+    >
+      <td className="py-2 pr-1 align-middle">
+        <button
+          type="button"
+          className="inline-flex h-9 w-9 cursor-grab touch-none items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground active:cursor-grabbing disabled:cursor-not-allowed"
+          aria-label={`Drag to reorder ${product.code}`}
+          disabled={disabled}
+          {...attributes}
+          {...listeners}
+        >
+          <GripVertical className="h-4 w-4" />
+        </button>
+      </td>
+      <td className="py-2 pr-4 font-mono text-xs">{product.code}</td>
+      <td className="py-2 pr-4">{product.description}</td>
+      <td className="hidden py-2 pr-4 sm:table-cell">{resolveProductCategory(product)}</td>
+      <td className="hidden py-2 pr-4 md:table-cell">{product.unit || "—"}</td>
+      <td className="py-2 text-right">
+        <Button variant="ghost" size="icon" onClick={onEdit} disabled={disabled}>
+          <Pencil className="h-4 w-4" />
+        </Button>
+        <Button variant="ghost" size="icon" onClick={onRemove} disabled={disabled}>
+          <Trash2 className="h-4 w-4" />
+        </Button>
+      </td>
+    </tr>
   );
 }
 
