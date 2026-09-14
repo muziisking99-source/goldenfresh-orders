@@ -482,8 +482,8 @@ function SortableProductRow({
       style={style}
       className={cn(
         "border-b border-border bg-card",
-        isDragging && "relative z-10 opacity-90 shadow-md",
-        disabled && "opacity-70",
+        isDragging && "relative z-10 shadow-md",
+        disabled && !isDragging && "opacity-70",
       )}
     >
       <td className="py-2 pr-1 align-middle">

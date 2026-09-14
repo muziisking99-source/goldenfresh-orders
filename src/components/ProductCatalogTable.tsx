@@ -51,7 +51,7 @@ export function ProductCatalogTable({
             return (
               <div
                 key={row.key}
-                className="bg-muted/50 px-3 py-1.5 text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-muted-foreground"
+                className="bg-muted px-3 py-1.5 text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-muted-foreground"
               >
                 {row.label}
               </div>
@@ -66,8 +66,8 @@ export function ProductCatalogTable({
             <div
               key={row.key}
               className={cn(
-                "border-b border-border/70 px-3 py-2.5",
-                hasQty || hasPrice ? "bg-primary/5" : undefined,
+                "border-b border-border/70 bg-card px-3 py-2.5",
+                hasQty || hasPrice ? "bg-primary/10" : undefined,
               )}
             >
               <div className="text-xs font-medium tabular-nums text-muted-foreground">{p.code}</div>
@@ -82,7 +82,7 @@ export function ProductCatalogTable({
                     inputMode="text"
                     value={quantities[p.id] ?? ""}
                     onChange={(e) => onQtyChange(p.id, e.target.value)}
-                    className="h-9 w-full px-2 text-center text-sm"
+                    className="h-9 w-full bg-background px-2 text-center text-sm"
                     aria-label={`Quantity for ${p.code}`}
                   />
                 </div>
@@ -95,7 +95,7 @@ export function ProductCatalogTable({
                     inputMode="text"
                     value={prices[p.id] ?? ""}
                     onChange={(e) => onPriceChange(p.id, e.target.value)}
-                    className="h-9 w-full px-2 text-center text-sm"
+                    className="h-9 w-full bg-background px-2 text-center text-sm"
                     aria-label={`Price for ${p.code}`}
                   />
                 </div>
@@ -114,22 +114,22 @@ export function ProductCatalogTable({
           <col className="w-[6rem] md:w-[7.5rem] lg:w-[8.5rem]" />
           <col className="w-[6rem] md:w-[7.5rem] lg:w-[8.5rem]" />
         </colgroup>
-        <thead className="sticky top-0 z-10 bg-card">
+        <thead className="sticky top-0 z-10 bg-card shadow-[0_1px_0_0_var(--color-border)]">
           <tr className="border-b border-border text-left text-xs font-semibold sm:text-sm md:text-base">
-            <th className="px-3 py-3 font-semibold sm:px-4 md:px-5 md:py-3.5">Code</th>
-            <th className="px-2 py-3 font-semibold md:px-3 md:py-3.5">Description</th>
-            <th className="px-2 py-3 text-center font-semibold md:py-3.5">Qty</th>
-            <th className="px-3 py-3 text-center font-semibold sm:px-4 md:px-5 md:py-3.5">Price</th>
+            <th className="bg-card px-3 py-3 font-semibold sm:px-4 md:px-5 md:py-3.5">Code</th>
+            <th className="bg-card px-2 py-3 font-semibold md:px-3 md:py-3.5">Description</th>
+            <th className="bg-card px-2 py-3 text-center font-semibold md:py-3.5">Qty</th>
+            <th className="bg-card px-3 py-3 text-center font-semibold sm:px-4 md:px-5 md:py-3.5">Price</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="bg-card">
           {rows.map((row) => {
             if (row.type === "group") {
               return (
-                <tr key={row.key} className="bg-muted/50">
+                <tr key={row.key} className="bg-muted">
                   <td
                     colSpan={4}
-                    className="px-3 py-1.5 text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-muted-foreground sm:px-4 sm:text-[0.7rem] md:px-5 md:py-2 md:text-xs"
+                    className="bg-muted px-3 py-1.5 text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-muted-foreground sm:px-4 sm:text-[0.7rem] md:px-5 md:py-2 md:text-xs"
                   >
                     {row.label}
                   </td>
@@ -145,8 +145,8 @@ export function ProductCatalogTable({
               <tr
                 key={row.key}
                 className={cn(
-                  "border-b border-border/70",
-                  hasQty || hasPrice ? "bg-primary/5" : "hover:bg-muted/30",
+                  "border-b border-border/70 bg-card",
+                  hasQty || hasPrice ? "bg-primary/10" : "hover:bg-muted",
                 )}
               >
                 <td className="truncate px-3 py-2 text-xs font-medium tabular-nums sm:px-4 sm:text-sm md:px-5 md:py-2.5 md:text-base">
@@ -160,7 +160,7 @@ export function ProductCatalogTable({
                     type="text"
                     value={quantities[p.id] ?? ""}
                     onChange={(e) => onQtyChange(p.id, e.target.value)}
-                    className="mx-auto h-8 w-full max-w-[5.5rem] px-2 text-center text-xs sm:h-9 sm:text-sm md:h-11 md:max-w-[7rem] md:text-base"
+                    className="mx-auto h-8 w-full max-w-[5.5rem] bg-background px-2 text-center text-xs sm:h-9 sm:text-sm md:h-11 md:max-w-[7rem] md:text-base"
                     aria-label={`Quantity for ${p.code}`}
                   />
                 </td>
@@ -169,7 +169,7 @@ export function ProductCatalogTable({
                     type="text"
                     value={prices[p.id] ?? ""}
                     onChange={(e) => onPriceChange(p.id, e.target.value)}
-                    className="mx-auto h-8 w-full max-w-[5.5rem] px-2 text-center text-xs sm:h-9 sm:text-sm md:h-11 md:max-w-[7rem] md:text-base"
+                    className="mx-auto h-8 w-full max-w-[5.5rem] bg-background px-2 text-center text-xs sm:h-9 sm:text-sm md:h-11 md:max-w-[7rem] md:text-base"
                     aria-label={`Price for ${p.code}`}
                   />
                 </td>

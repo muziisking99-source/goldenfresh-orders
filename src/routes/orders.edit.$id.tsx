@@ -284,7 +284,7 @@ function EditOrderPage() {
 
   return (
     <main className="flex h-[calc(100dvh-3.5rem)] flex-col overflow-hidden md:h-[calc(100dvh-4.25rem)]">
-      <div className="shrink-0 border-b border-border/70 bg-background/95 px-4 py-3 md:px-6 md:py-4">
+      <div className="shrink-0 border-b border-border/70 bg-background px-4 py-3 md:px-6 md:py-4">
         <div className="mx-auto flex max-w-6xl flex-col gap-3 lg:max-w-7xl md:gap-3.5">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div>
@@ -442,7 +442,7 @@ function EditOrderPage() {
       </div>
 
       <div
-        className="fixed inset-x-0 bottom-0 z-30 border-t border-border/70 bg-background/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-md print:hidden"
+        className="fixed inset-x-0 bottom-0 z-30 border-t border-border/70 bg-background pb-[env(safe-area-inset-bottom)] print:hidden"
         style={{ "--tw-shadow": "0 -8px 24px rgba(11,31,58,0.06)" } as CSSProperties}
       >
         <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between md:px-6 md:py-4 lg:max-w-7xl">

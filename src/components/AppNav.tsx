@@ -42,7 +42,7 @@ export function AppNav() {
   }
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border/60 bg-background/90 backdrop-blur-md print:hidden">
+    <header className="sticky top-0 z-40 border-b border-border/60 bg-background print:hidden">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 md:px-6 md:py-4 lg:max-w-7xl">
         <Link to="/" className="group flex min-w-0 items-center gap-2.5">
           <img
