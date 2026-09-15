@@ -63,13 +63,19 @@ const STRIPE = "#F7F5F0";
 
 const s = StyleSheet.create({
   page: {
-    paddingTop: 0,
+    paddingTop: 236,
     paddingBottom: 148,
     paddingHorizontal: 0,
     fontFamily: "NunitoPdf",
     fontSize: 9,
     color: INK,
     backgroundColor: PAPER,
+  },
+  repeatedHeader: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
   },
   headerBand: {
     backgroundColor: PAPER,
@@ -112,7 +118,7 @@ const s = StyleSheet.create({
   },
   body: {
     paddingHorizontal: 28,
-    paddingTop: 12,
+    paddingTop: 0,
   },
   titleRow: {
     flexDirection: "row",
@@ -411,6 +417,67 @@ function hasAnyPrice(items: SalesOrderPdfData["items"]) {
   return items.some((it) => (it.price ?? "").trim() !== "");
 }
 
+function RepeatedOrderHeader({ data }: { data: SalesOrderPdfData }) {
+  return (
+    <View style={s.repeatedHeader} fixed>
+      <View style={s.headerBand}>
+        <Image src={data.logoSrc ?? GOLDEN_FRESH_LOGO_DATA_URL} style={s.logo} />
+        <View style={s.letterheadRight}>
+          <Text style={s.letterheadLine}>{COMPANY.address}</Text>
+          <Text style={s.letterheadLine}>Tel: {COMPANY.tel}</Text>
+          <Text style={s.letterheadEmail}>{COMPANY.salesEmail}</Text>
+        </View>
+      </View>
+      <View style={s.goldStripe} />
+      <View style={s.redAccent} />
+
+      <View style={s.body}>
+        <View style={s.titleRow}>
+          <View style={s.titleLeft}>
+            <Text style={s.docEyebrow}>Official document</Text>
+            <Text style={s.docTitle}>Order Requisition</Text>
+          </View>
+          <View style={s.metaBox}>
+            <View style={s.metaBoxRow}>
+              <Text style={s.metaBoxLabel}>Document</Text>
+              <Text style={s.metaBoxValue}>{data.documentNumber}</Text>
+            </View>
+            <View style={s.metaBoxRow}>
+              <Text style={s.metaBoxLabel}>Date</Text>
+              <Text style={s.metaBoxValue}>{formatDisplayDate(data.orderDate)}</Text>
+            </View>
+            <View style={s.metaBoxRowLast}>
+              <Text style={s.metaBoxLabel}>Page</Text>
+              <Text
+                style={s.metaBoxValue}
+                render={({ pageNumber, totalPages }) => `${pageNumber} of ${totalPages}`}
+              />
+            </View>
+          </View>
+        </View>
+
+        <View style={s.infoRow}>
+          <View style={s.deliverCard}>
+            <Text style={s.sectionLabel}>Deliver to</Text>
+            <Text style={s.customerName}>{data.customerName}</Text>
+            <Text style={s.address}>{data.deliveryAddress || "—"}</Text>
+          </View>
+          <View style={s.codesStack}>
+            <View style={s.codeCell}>
+              <Text style={s.codeLabel}>Account Code</Text>
+              <Text style={s.codeValue}>{data.accountCode || "—"}</Text>
+            </View>
+            <View style={s.codeCellLast}>
+              <Text style={s.codeLabel}>Order By</Text>
+              <Text style={s.codeValue}>{data.orderBy || "—"}</Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  );
+}
+
 export function SalesOrderPdfDocument({ data }: { data: SalesOrderPdfData }) {
   const rows = padItems(data.items);
   const filledCount = data.items.length;
@@ -419,57 +486,9 @@ export function SalesOrderPdfDocument({ data }: { data: SalesOrderPdfData }) {
   return (
     <Document title={`Order Requisition ${data.documentNumber}`} author={COMPANY.brandName}>
       <Page size="A4" style={s.page}>
-        <View style={s.headerBand}>
-          <Image src={data.logoSrc ?? GOLDEN_FRESH_LOGO_DATA_URL} style={s.logo} />
-          <View style={s.letterheadRight}>
-            <Text style={s.letterheadLine}>{COMPANY.address}</Text>
-            <Text style={s.letterheadLine}>Tel: {COMPANY.tel}</Text>
-            <Text style={s.letterheadEmail}>{COMPANY.salesEmail}</Text>
-          </View>
-        </View>
-        <View style={s.goldStripe} />
-        <View style={s.redAccent} />
+        <RepeatedOrderHeader data={data} />
 
         <View style={s.body}>
-          <View style={s.titleRow}>
-            <View style={s.titleLeft}>
-              <Text style={s.docEyebrow}>Official document</Text>
-              <Text style={s.docTitle}>Order Requisition</Text>
-            </View>
-            <View style={s.metaBox}>
-              <View style={s.metaBoxRow}>
-                <Text style={s.metaBoxLabel}>Document</Text>
-                <Text style={s.metaBoxValue}>{data.documentNumber}</Text>
-              </View>
-              <View style={s.metaBoxRow}>
-                <Text style={s.metaBoxLabel}>Date</Text>
-                <Text style={s.metaBoxValue}>{formatDisplayDate(data.orderDate)}</Text>
-              </View>
-              <View style={s.metaBoxRowLast}>
-                <Text style={s.metaBoxLabel}>Page</Text>
-                <Text style={s.metaBoxValue}>1 of 1</Text>
-              </View>
-            </View>
-          </View>
-
-          <View style={s.infoRow}>
-            <View style={s.deliverCard}>
-              <Text style={s.sectionLabel}>Deliver to</Text>
-              <Text style={s.customerName}>{data.customerName}</Text>
-              <Text style={s.address}>{data.deliveryAddress || "—"}</Text>
-            </View>
-            <View style={s.codesStack}>
-              <View style={s.codeCell}>
-                <Text style={s.codeLabel}>Account Code</Text>
-                <Text style={s.codeValue}>{data.accountCode || "—"}</Text>
-              </View>
-              <View style={s.codeCellLast}>
-                <Text style={s.codeLabel}>Order By</Text>
-                <Text style={s.codeValue}>{data.orderBy || "—"}</Text>
-              </View>
-            </View>
-          </View>
-
           <View style={s.table}>
             <View style={s.tableHeader}>
               <Text style={[s.th, showPrice ? s.thCodeWithPrice : s.thCode]}>Code</Text>
