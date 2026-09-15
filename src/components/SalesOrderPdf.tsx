@@ -63,7 +63,7 @@ const STRIPE = "#F7F5F0";
 
 const s = StyleSheet.create({
   page: {
-    paddingTop: 268,
+    paddingTop: 310,
     paddingBottom: 148,
     paddingHorizontal: 0,
     fontFamily: "NunitoPdf",
@@ -122,20 +122,19 @@ const s = StyleSheet.create({
   },
   headerBody: {
     paddingHorizontal: 28,
-    paddingTop: 14,
+    paddingTop: 10,
   },
   titleRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-start",
-    marginBottom: 10,
-    marginTop: 4,
+    marginBottom: 8,
   },
   titleLeft: {
     justifyContent: "center",
     flex: 1,
     paddingRight: 10,
-    paddingTop: 6,
+    paddingTop: 4,
   },
   docEyebrow: {
     fontSize: 6.5,
@@ -153,7 +152,7 @@ const s = StyleSheet.create({
   },
   metaBox: {
     width: 148,
-    marginTop: 8,
+    marginTop: 4,
     borderWidth: 1,
     borderColor: NAVY,
     backgroundColor: STRIPE,
@@ -187,7 +186,7 @@ const s = StyleSheet.create({
   },
   infoRow: {
     flexDirection: "row",
-    marginBottom: 10,
+    marginBottom: 0,
   },
   deliverCard: {
     flex: 1.4,
