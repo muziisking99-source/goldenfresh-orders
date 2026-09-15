@@ -148,7 +148,6 @@ const s = StyleSheet.create({
   metaBox: {
     width: 148,
     marginTop: 14,
-    alignSelf: "flex-end",
     borderWidth: 1,
     borderColor: NAVY,
     backgroundColor: STRIPE,
