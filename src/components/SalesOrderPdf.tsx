@@ -60,13 +60,13 @@ const RULE = "#C8C4BA";
 const RULE_SOFT = "#E6E2D8";
 const PAPER = "#FFFFFF";
 const STRIPE = "#F7F5F0";
-/** 3mm in PDF points (1mm ≈ 2.8346pt) */
-const GAP_3MM = 8.5;
+/** 1mm in PDF points (1mm ≈ 2.8346pt) */
+const GAP_1MM = 2.85;
 
 const s = StyleSheet.create({
   page: {
-    // Fixed header height + 3mm gap before the products table
-    paddingTop: 282,
+    // Fixed header height + 1mm gap before the products table
+    paddingTop: 276,
     paddingBottom: 148,
     paddingHorizontal: 0,
     fontFamily: "NunitoPdf",
@@ -126,7 +126,7 @@ const s = StyleSheet.create({
   headerBody: {
     paddingHorizontal: 28,
     paddingTop: 10,
-    paddingBottom: GAP_3MM,
+    paddingBottom: GAP_1MM,
   },
   titleRow: {
     flexDirection: "row",
