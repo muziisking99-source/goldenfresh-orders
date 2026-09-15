@@ -151,6 +151,7 @@ function NewOrderPage() {
       try {
         const itemRows = rows.map((r, i) => ({
           id: String(i),
+          product_id: r.product_id,
           product_code: r.product_code,
           product_description: r.product_description,
           quantity: r.quantity,
