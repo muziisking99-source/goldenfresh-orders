@@ -490,7 +490,7 @@ export function SalesOrderPdfDocument({ data }: { data: SalesOrderPdfData }) {
 
         <View style={s.body}>
           <View style={s.table}>
-            <View style={s.tableHeader}>
+            <View style={s.tableHeader} fixed>
               <Text style={[s.th, showPrice ? s.thCodeWithPrice : s.thCode]}>Code</Text>
               <Text style={[s.th, showPrice ? s.thDescWithPrice : s.thDesc]}>Description</Text>
               <Text style={[s.th, showPrice ? s.thQtyWithPrice : s.thQty]}>Quantity</Text>
