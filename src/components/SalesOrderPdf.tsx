@@ -63,7 +63,7 @@ const STRIPE = "#F7F5F0";
 
 const s = StyleSheet.create({
   page: {
-    paddingTop: 250,
+    paddingTop: 268,
     paddingBottom: 148,
     paddingHorizontal: 0,
     fontFamily: "NunitoPdf",
@@ -120,16 +120,22 @@ const s = StyleSheet.create({
     paddingHorizontal: 28,
     paddingTop: 0,
   },
+  headerBody: {
+    paddingHorizontal: 28,
+    paddingTop: 14,
+  },
   titleRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "stretch",
+    alignItems: "flex-start",
     marginBottom: 10,
+    marginTop: 4,
   },
   titleLeft: {
     justifyContent: "center",
     flex: 1,
     paddingRight: 10,
+    paddingTop: 6,
   },
   docEyebrow: {
     fontSize: 6.5,
@@ -147,7 +153,7 @@ const s = StyleSheet.create({
   },
   metaBox: {
     width: 148,
-    marginTop: 14,
+    marginTop: 8,
     borderWidth: 1,
     borderColor: NAVY,
     backgroundColor: STRIPE,
@@ -432,7 +438,7 @@ function RepeatedOrderHeader({ data }: { data: SalesOrderPdfData }) {
       <View style={s.goldStripe} />
       <View style={s.redAccent} />
 
-      <View style={s.body}>
+      <View style={s.headerBody}>
         <View style={s.titleRow}>
           <View style={s.titleLeft}>
             <Text style={s.docEyebrow}>Official document</Text>
