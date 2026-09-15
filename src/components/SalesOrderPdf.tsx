@@ -63,7 +63,7 @@ const STRIPE = "#F7F5F0";
 
 const s = StyleSheet.create({
   page: {
-    paddingTop: 236,
+    paddingTop: 250,
     paddingBottom: 148,
     paddingHorizontal: 0,
     fontFamily: "NunitoPdf",
