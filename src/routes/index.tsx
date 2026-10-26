@@ -193,15 +193,6 @@ function NewOrderPage() {
       {/* Compact top strip */}
       <div className="shrink-0 border-b border-border/70 bg-background px-4 py-3 md:px-6 md:py-4">
         <div className="mx-auto flex max-w-6xl flex-col gap-3 lg:max-w-7xl md:gap-3.5">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <h1 className="font-display text-xl leading-none text-[var(--brand-navy)] md:text-2xl lg:text-3xl">
-              New Order Requisition
-            </h1>
-            <p className="text-xs text-muted-foreground md:text-sm">
-              Price optional — blank hides it on the document
-            </p>
-          </div>
-
           <div className="grid gap-2 sm:grid-cols-[minmax(0,16rem)_minmax(0,1fr)_auto] sm:items-center md:grid-cols-[minmax(0,18rem)_minmax(0,1fr)_auto] md:gap-3">
             <Popover open={customerOpen} onOpenChange={setCustomerOpen}>
               <PopoverTrigger asChild>

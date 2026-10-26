@@ -299,9 +299,6 @@ function EditOrderPage() {
                 Cancel — back to document
               </Link>
             </div>
-            <p className="text-xs text-muted-foreground md:text-sm">
-              Price optional — blank hides it on the document
-            </p>
           </div>
 
           <div className="grid gap-2 sm:grid-cols-[minmax(0,16rem)_minmax(0,1fr)_auto] sm:items-center md:grid-cols-[minmax(0,18rem)_minmax(0,1fr)_auto] md:gap-3">
